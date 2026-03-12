@@ -1,3 +1,3 @@
 import { LoginPage } from "./loginPage";
-
-export { LoginPage } 
+import { DashboardPage }  from "./DashboardPage";
+export { LoginPage , DashboardPage } 
