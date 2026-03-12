@@ -1,7 +1,7 @@
 const { test, expect, chromium } = require('@playwright/test');
 const sections = require('../pages/pageIndex');
 require("dotenv").config();
-
+const devices = require("../test_Data/addDeviceOptions.json")
 
 test.describe('@regression verifying pos', async () => {
     let page;
@@ -11,15 +11,20 @@ test.describe('@regression verifying pos', async () => {
 
         const loginPage = new sections.LoginPage(page, test)
         await loginPage.launchAppAndLoginWithValidCredentials();
+
     })
 
-    test("Verifying the dashboard page", async () => {
+    test.only("Add Register", async () => {
         const dashboardpage = new sections.DashboardPage(page, test);
-
+        const posSystemPage = new sections.PosSystemPage(page, test)
         await dashboardpage.GotoDashboardPage();
         await dashboardpage.DevicesPage();
-        await dashboardpage.ScrollToPos();
-        await dashboardpage.ListOfPos();
+        await dashboardpage.selectDeviceTypeInAddDevice(devices.devices[2]);
+        await posSystemPage.verifyPosSystemPageAppeard();
+        await posSystemPage.clickPlusIcon();
+        await posSystemPage.SelectSite();
+        await posSystemPage.SelectBridge();
+
     })
 
     
