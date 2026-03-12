@@ -8,10 +8,13 @@ export class DashboardPage {
         this.test = test;
         this.Dashboard = page.locator('//div[text()=" Dashboard "]')
         this.Devices = page.locator('//div[contains(@class,"page-title__name") and normalize-space()="Devices"]')
-        this.AddDevice = page.locator('//button[normalize-space()="Add device"]')
+        this.btnAddDevice = page.locator('//button[normalize-space()="Add device"]')
+        this.addDeviceOptionsLayout= page.locator("//div[@role='menu' and contains(@class,'drop-down-menu')]");
+
         this.PosSystems = page.locator('//div/div[normalize-space()="POS systems"]')
         this.NoOfPos = page.locator('(//div[@class="v-data-table__wrapper"])[7]//tbody')
         this.cababmenu = page.getByTestId('pos-systems-table-dropdown-menu:lightspeed-x');
+        this.addDeviceEle = (devicetype)=> page.getByTestId(devicetype);
     }
 
     async GotoDashboardPage() {
@@ -38,6 +41,18 @@ export class DashboardPage {
         }
 
     }
+
+    async clickAddDeviceButton(){
+        await expect(this.btnAddDevice).toBeVisible(); 
+        await this.btnAddDevice.click();
+        await expect(this.addDeviceOptionsLayout).toBeVisible();
+    }
+    async selectDeviceTypeInAddDevice(deviceType){
+        await this.page.waitForTimeout(parseInt(process.env.SMALL_WAIT));
+        await this.clickAddDeviceButton();
+        await this.addDeviceEle(deviceType).click();
+    }
+    
 
     
 }
