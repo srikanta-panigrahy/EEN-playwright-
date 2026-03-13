@@ -1,5 +1,7 @@
+import { settings } from 'node:cluster';
+
 const { test, expect } = require('@playwright/test');
-const {excuteSteps}  =require("../utilities/actions.js");
+const { excuteSteps } = require("../utilities/actions.js");
 
 export class DashboardPage {
 
@@ -10,13 +12,16 @@ export class DashboardPage {
         this.Devices = page.locator('//div[contains(@class,"page-title__name") and normalize-space()="Devices"]')
         this.AddDevice = page.locator('//button[normalize-space()="Add device"]')
         this.PosSystems = page.locator('//div/div[normalize-space()="POS systems"]')
-        this.NoOfPos = page.locator('(//div[@class="v-data-table__wrapper"])[7]//tbody')
-        this.cababmenu = page.getByTestId('pos-systems-table-dropdown-menu:lightspeed-x');
+        this.NoOfPos = page.locator('//div[@data-testid="pos-systems-table"]//table//tbody')
+        this.cababmenu = page.locator('//div[contains(@class,"device-action-button") and contains(@data-testid,"pos-systems-table-dropdown-menu:l")]');
+        this.Settings = page.getByTestId('Settings');
     }
 
     async GotoDashboardPage() {
-        await excuteSteps(test,this.Dashboard,"click","clicking on the dashboard")
+        await this.Dashboard.first().waitFor({state: 'visible'}); //this will wait for the specified element in dom
+        await excuteSteps(test, this.Dashboard, "click", "clicking on the dashboard")
         await expect(this.Dashboard).toBeVisible();
+
     }
     async DevicesPage() {
         await expect(this.Devices).toBeVisible();
@@ -26,18 +31,27 @@ export class DashboardPage {
         await this.PosSystems.scrollIntoViewIfNeeded();
         console.log("posSystem is visible")
         await expect(this.PosSystems).toBeVisible();
+        await excuteSteps(test, this.PosSystems, "click", "clicking the pos")
     }
-    async ListOfPos(ele) {
-        const poss = await this.NoOfPos.elementHandles();
-        for (const pos of poss) {
-            const title = await pos.title();
-            console.log(title)
-            if (title == 'Lightspeed POS (X-Series)') {
-                await this.cababmenu.click();
-            }
+    async SettingClick() {
+        await excuteSteps(test, this.Settings, "click", "clicking on the settings")
+    }
+
+    async kabebMenuAnd(){
+        // await this.cababmenu.scrollIntoViewIfNeeded();
+        // await this.cababmenu.first().waitFor({state:'visible'});
+        await excuteSteps(test,this.cababmenu,"click","click on the kabeb menu");
+    }
+    async ListOfPos() {
+        const poss = this.NoOfPos;   // locator
+        const count = await poss.count();
+        console.log(count)
+
+        for (let i = 0; i < count; i++) {
+            const title = await poss.nth(i).textContent();
+            console.log(title);
         }
-
     }
-
-    
 }
+
+

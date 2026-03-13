@@ -22,6 +22,9 @@ test.describe('@regression verifying pos', async () => {
         await dashboardpage.DevicesPage();
         await dashboardpage.ScrollToPos();
         await dashboardpage.ListOfPos();
+        await dashboardpage.kabebMenuAnd();
+        await dashboardpage.SettingClick();
+        await page.waitForTimeout(5000);
 
     })
 
