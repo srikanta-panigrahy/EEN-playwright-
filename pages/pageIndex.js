@@ -1,3 +1,4 @@
 import { LoginPage } from "./loginPage";
 import { DashboardPage }  from "./DashboardPage";
-export { LoginPage , DashboardPage } 
+import { PosSystemPage } from "./posSystemPage";
+export { LoginPage , DashboardPage, PosSystemPage } 

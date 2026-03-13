@@ -10,7 +10,9 @@ export class DashboardPage {
         this.test = test;
         this.Dashboard = page.locator('//div[text()=" Dashboard "]')
         this.Devices = page.locator('//div[contains(@class,"page-title__name") and normalize-space()="Devices"]')
-        this.AddDevice = page.locator('//button[normalize-space()="Add device"]')
+        this.btnAddDevice = page.locator('//button[normalize-space()="Add device"]')
+        this.addDeviceOptionsLayout= page.locator("//div[@role='menu' and contains(@class,'drop-down-menu')]");
+
         this.PosSystems = page.locator('//div/div[normalize-space()="POS systems"]')
         this.NoOfPos = page.locator('//div[@data-testid="pos-systems-table"]//table//tbody')
         this.cababmenu = page.locator('//div[contains(@class,"device-action-button") and contains(@data-testid,"pos-systems-table-dropdown-menu:l")]');
