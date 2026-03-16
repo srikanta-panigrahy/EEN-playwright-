@@ -8,6 +8,7 @@ test.describe('@regression verifying pos', async () => {
     test.beforeAll('Login with valid credentials', async ({ browser }) => {
         const context = await browser.newContext()
         page = await context.newPage()
+        test.setTimeout(60000)
 
         const loginPage = new sections.LoginPage(page, test)
         await loginPage.launchAppAndLoginWithValidCredentials();

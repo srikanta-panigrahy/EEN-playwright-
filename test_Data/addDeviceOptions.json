@@ -2,6 +2,13 @@
     "devices": [
         "Add sensor",
         "Add sensor gateway",
-        "Add POS register"
+        "Add POS register",
+        "Add POS system"
+    ],
+    "storeOptions":[
+        "PoS-test-register"
+    ],
+    "registerOptions":[
+        "PoS-test-register-default"
     ]
 }

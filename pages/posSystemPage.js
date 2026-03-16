@@ -9,14 +9,34 @@ export class PosSystemPage {
         this.test = test;
         this.POSpageHeadingText = page.locator('//span[starts-with(normalize-space(text()), "POS system")]');
         this.PlusButton = page.getByTestId('pos-registers-sidebar-open-button');
-        this.Addsite = page.getByPlaceholder('Select Site');
-        this.Selectsite = page.locator('//div[text()="Dont delete"]'); 
+        // this.Addsite = page.getByPlaceholder('Select site');
+        this.Addsite = page.getByLabel('Select site');
+        // this.Addsite = page.locator('//label[text()="Select site"]'); 
+        this.Selectsite = page.locator('//div[text()="test"]'); 
         this.AddBridge = page.getByLabel('Select Bridge');
         this.selectBridge = page.locator('//div[contains(@class,"content")]//div[text()="711 Test"]');
+        this.selectCamera = page.getByLabel('Select camera');
+        this.selectCameraFromDropDown = page.locator('//div[contains(@class,v-list-item__title)]//div[contains(text(),"EN-CDUF-004a")]');
+        this.posRegistersTab = page.getByTestId('tabs__tab-1-POS registers');
+        this.storeAndRegisterFilterBox = page.locator('//input[@data-testid="pos-registers-sidebar-filter-input-box"]');
+        this.storeOrRegisterCheckBox = (storeName)=> page.locator(`//span[@data-testid="tree-view-${storeName}"]/../span/div`);
+        this.btnAddRegisters = page.getByTestId('pos-registers-add-button');
+        this.btnDeleteRegister = (registerName) => page.locator(`//div[normalize-space(text())="${registerName}"]/../../../following-sibling::td[3]/button`);
+        // this.registerInTable = (registerName) => page.locator(`//div[normalize-space(text())="${registerName}"]`);
+        this.btnCancle = page.locator('//button[@data-testid="pos-registers-cancel-button"]');
+        this.btnSaveChanges = page.locator('//button[@data-testid="pos-registers-save-changes-button"]');
+        this.btnSaveAndExit = page.locator('//button[@data-testid="pos-registers-save-and-exit-button"]');
+        this.successMessge = page.locator('//span[normalize-space(text())="Success"]');
+        this.snackbarMessage = page.locator('//span[@class="snackbar__content--title"]');
+        
     }
 
     async verifyPosSystemPageAppeard() {
         await expect(this.POSpageHeadingText).toBeVisible();
+    }
+
+    async clickPOSRegisterTab(){
+        await excuteSteps(this.test, this.posRegistersTab, "click", "clicking POS registers tab");
     }
 
     async clickPlusIcon(){
@@ -31,4 +51,46 @@ export class PosSystemPage {
         await excuteSteps(this.test, this.AddBridge, "click", "Selecting bridge")
         await excuteSteps(this.test, this.selectBridge, "click", "Selecting bridge");
     }
+    async SelectCamera(){
+        await excuteSteps(this.test, this.selectCamera, "click", "Click Select camera dropdown");
+        await excuteSteps(this.test, this.selectCameraFromDropDown, "click", "Selecting camera from dropdown")
+    }
+
+    async SelectStore(storeName){
+        const store =  this.storeCheckBox(storeName);
+        await excuteSteps(this.test, store, "click", `Selecting Store${store}`);
+    }
+
+    async SelectRegister(register){
+        await excuteSteps(this.test, this.storeAndRegisterFilterBox, "fill", "searching register ",[register]);
+        const registerCheckbox =  this.storeOrRegisterCheckBox(register);
+        await excuteSteps(this.test, registerCheckbox, "click", `Selecting Store/Register:${registerCheckbox}`);
+    }
+
+    async clickAddRegister(){
+        await excuteSteps(this.test, this.btnAddRegisters, "click", "Click Add registers button");
+    }
+    //delete register from POS System page  //not working
+    // async deleteRegister(registerName){  
+    //     const deleteBtn = this.btnDeleteRegister(registerName);
+    //     if(await deleteBtn.count()>0){
+    //         // await expect(this.registerInTable(registerName)).toBeVisible();
+    //         await excuteSteps(this.test, deleteBtn, "click", `Click delete register button for register ${registerName}`);
+    //         await this.clickSaveChangesBtn();
+    //         await this.veifySuccessmessage();
+    //     }else{
+    //         console.log(`Register ${registerName} not added`);
+    //     }  
+    // }
+    async clickSaveChangesBtn(){
+        await excuteSteps(this.test, this.btnSaveChanges, "click", "Click Save Changes button");
+    }
+    async clickSaveAndExitBtn(){
+        await excuteSteps(this.test, this.btnSaveAndExit, "click", "Click Save & Exit button");
+    }
+    async veifySuccessmessage(){
+        // await expect(this.successMessge).toBeVisible();
+        await expect(this.snackbarMessage).toHaveText('Success',{timeout: 20000});
+    }
+   
 }
