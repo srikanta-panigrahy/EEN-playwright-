@@ -17,6 +17,13 @@ export class DashboardPage {
         this.NoOfPos = page.locator('//div[@data-testid="pos-systems-table"]//table//tbody')
         this.cababmenu = page.locator('//div[contains(@class,"device-action-button") and contains(@data-testid,"pos-systems-table-dropdown-menu:l")]');
         this.Settings = page.getByTestId('Settings');
+        this.addDevice = (devicetype)=> page.getByTestId(devicetype);
+        this.squarePOSExpandBtn = page.locator('//*[@data-testid="pos-systems-table-system-name:square"]//div[contains(@class,"icon-wrapper")]')
+        this.registerMenu = (register)=> page.locator(`//td[normalize-space()="${register}"]/../td[7]`);
+        this.deleteRegisterTxt = page.locator('//div[@data-testid="Delete register"]');
+        this.deleteRegisterBtnInDialogueBox = page.locator('//button[normalize-space(text())="Delete register"]');
+        this.deleteRegisterDialogueBox = page.locator('//div[contains(@class,"v-dialog--active")]');
+        this.registerDeletedMessagebox = page.locator('//div[@class="snackbar__content--main"]');
     }
 
     async GotoDashboardPage() {
@@ -53,6 +60,30 @@ export class DashboardPage {
             const title = await poss.nth(i).textContent();
             console.log(title);
         }
+    }
+    async clickAddDeviceButton(){
+        await expect(this.btnAddDevice).toBeVisible(); 
+        await excuteSteps(test,this.btnAddDevice,"click","click on Add device button");
+        // await this.btnAddDevice.click();
+        await expect(this.addDeviceOptionsLayout).toBeVisible();
+    }
+    async selectDeviceTypeInAddDevice(deviceType){
+        await this.page.waitForTimeout(parseInt(process.env.SMALL_WAIT)); //need to remove hard wait
+        await this.clickAddDeviceButton();
+        await excuteSteps(test,this.addDevice(deviceType),"click",`click ${deviceType} in Add devices options`);
+    }
+
+    async verifyRegisterExistInSquarePOS(registerName){
+        await excuteSteps(test,this.squarePOSExpandBtn,"click","click on expand btn for square POS ");
+        // await this.squarePOSExpandBtn.click();
+    }
+    async deleteRegister(registerName){
+        await this.registerMenu(registerName).click();
+        await this.deleteRegisterTxt.click();
+        expect(this.deleteRegisterDialogueBox).toContainText('You are about to delete the register');
+        await this.deleteRegisterBtnInDialogueBox.click();
+        await expect(this.registerDeletedMessagebox).toBeVisible();
+        await expect(this.registerDeletedMessagebox).toContainText('was successfuly removed from Dashboard');
     }
 }
 
