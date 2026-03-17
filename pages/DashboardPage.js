@@ -84,6 +84,9 @@ export class DashboardPage {
         await expect(this.registerDeletedMessagebox).toBeVisible();
         await expect(this.registerDeletedMessagebox).toContainText('was successfuly removed from Dashboard');
     }
+    async deletePOSSystem(){
+        
+    }
 }
 
 
