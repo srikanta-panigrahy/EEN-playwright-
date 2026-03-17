@@ -1,7 +1,7 @@
 import { expect } from "allure-playwright";
 
 const {excuteSteps}  =require("../utilities/actions.js");
-require("dotenv").config();
+
 
 export class LoginPage {
 

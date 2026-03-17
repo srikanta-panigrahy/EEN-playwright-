@@ -1,6 +1,6 @@
 const { test, expect, chromium } = require('@playwright/test');
 const sections = require('../pages/pageIndex');
-require("dotenv").config();
+// require("dotenv").config();
 
 test.describe('@smoke Login page test', async () => {
     let page;
