@@ -1,4 +1,3 @@
-import { settings } from 'node:cluster';
 
 const { test, expect } = require('@playwright/test');
 const { excuteSteps } = require("../utilities/actions.js");
