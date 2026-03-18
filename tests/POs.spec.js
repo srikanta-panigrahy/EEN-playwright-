@@ -5,13 +5,17 @@ require("dotenv").config();
 
 test.describe('@regression verifying pos', async () => {
     let page;
+    let context;
     test.beforeAll('Login with valid credentials', async ({ browser }) => {
-        const context = await browser.newContext()
+        context = await browser.newContext()
         page = await context.newPage()
         test.setTimeout(60000)
 
         const loginPage = new sections.LoginPage(page, test)
         await loginPage.launchAppAndLoginWithValidCredentials();
+    });
+    test.afterAll('Closing context',async()=>{
+         await context.close();
     })
 
     test("Verifying the dashboard page", async () => {
