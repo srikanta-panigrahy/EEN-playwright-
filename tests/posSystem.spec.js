@@ -29,7 +29,6 @@ test.describe('@regression Add register and delete register', async () => {
         await posSystemPage.clickPOSRegisterTab();
         await posSystemPage.clickPlusIcon();
         await posSystemPage.SelectRegister(devices.registerOptions[0]);
-        // await posSystemPage.SelectStore(devices.storeOptions[0]);
         await posSystemPage.clickAddRegister();
     
         await posSystemPage.SelectSite();
