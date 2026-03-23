@@ -57,7 +57,7 @@ export class PosSystemPage {
     }
 
     async SelectStore(storeName){
-        const store =  this.storeCheckBox(storeName);
+        const store =  this.storeOrRegisterCheckBox(storeName);
         await excuteSteps(this.test, store, "click", `Selecting Store${store}`);
     }
 
