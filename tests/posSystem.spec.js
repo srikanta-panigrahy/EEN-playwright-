@@ -19,7 +19,7 @@ test.describe('@regression Add register and delete register', async () => {
          await context.close();
     })
 
-    test.only("Add Register", async () => {
+    test("Add Register", async () => {
         const dashboardpage = new sections.DashboardPage(page, test);
         const posSystemPage = new sections.PosSystemPage(page, test);
         await dashboardpage.GotoDashboardPage();
