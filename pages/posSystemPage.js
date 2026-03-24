@@ -28,6 +28,9 @@ export class PosSystemPage {
         this.btnSaveAndExit = page.locator('//button[@data-testid="pos-registers-save-and-exit-button"]');
         this.successMessge = page.locator('//span[normalize-space(text())="Success"]');
         this.snackbarMessage = page.locator('//span[@class="snackbar__content--title"]');
+        this.posDropdown=page.getByTestId("pos-integration-system-selector")
+        this.Squarepos=page.locator("//div[contains(@class,'title') and text()='Square POS']")
+        this.singintopos=page.locator("//span[text()=' Sign into Square POS ']")
         
     }
 
@@ -92,5 +95,19 @@ export class PosSystemPage {
         // await expect(this.successMessge).toBeVisible();
         await expect(this.snackbarMessage).toHaveText('Success',{timeout: 20000});
     }
+
+    async PosDrpDwn(){
+        await expect(this.posDropdown).toBeVisible();
+        await excuteSteps(this.test,this.posDropdown,"click","Clicking pos drop down")
+    }
+    async SingInToPos(){
+        await expect(this.singintopos).toBeVisible();
+        await excuteSteps(this.test,this.singintopos,"click","clicking on the entering to pos page");
+    }
+    async clickOnPos(){
+        await expect(this.Squarepos).toBeVisible();
+        await excuteSteps(this.test,this.Squarepos,"click","clicking on the pos");
+    }
+    
    
 }

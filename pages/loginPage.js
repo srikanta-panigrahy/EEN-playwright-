@@ -46,7 +46,7 @@ export class LoginPage {
     }
 
     async launchAppAndLoginWithValidCredentials() {
-        await this.navigateToLoginPage(process.env.BASE_URL);
+        // await this.navigateToLoginPage(process.env.BASE_URL);
         await this.enterUserName([process.env.USER_EMAIL]);
         await this.clickNext();
         await this.page.waitForTimeout(parseInt(process.env.SMALL_WAIT));

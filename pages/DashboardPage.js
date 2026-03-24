@@ -10,30 +10,33 @@ export class DashboardPage {
         this.Dashboard = page.locator('//div[text()=" Dashboard "]')
         this.Devices = page.locator('//div[contains(@class,"page-title__name") and normalize-space()="Devices"]')
         this.btnAddDevice = page.locator('//button[normalize-space()="Add device"]')
-        this.addDeviceOptionsLayout= page.locator("//div[@role='menu' and contains(@class,'drop-down-menu')]");
-
+        this.addDeviceOptionsLayout = page.locator("//div[@role='menu' and contains(@class,'drop-down-menu')]");
         this.PosSystems = page.locator('//div/div[normalize-space()="POS systems"]')
         this.NoOfPos = page.locator('//div[@data-testid="pos-systems-table"]//table//tbody')
         this.cababmenu = page.locator('//div[contains(@class,"device-action-button") and contains(@data-testid,"pos-systems-table-dropdown-menu:l")]');
         this.Settings = page.getByTestId('Settings');
-        this.addDevice = (devicetype)=> page.getByTestId(devicetype);
+        this.addDevice = (devicetype) => page.getByTestId(devicetype);
         this.squarePOSExpandBtn = page.locator('//*[@data-testid="pos-systems-table-system-name:square"]//div[contains(@class,"icon-wrapper")]')
-        this.registerMenu = (register)=> page.locator(`//td[normalize-space()="${register}"]/../td[7]`);
+        this.registerMenu = (register) => page.locator(`//td[normalize-space()="${register}"]/../td[7]`);
         this.deleteRegisterTxt = page.locator('//div[@data-testid="Delete register"]');
         this.deleteRegisterBtnInDialogueBox = page.locator('//button[normalize-space(text())="Delete register"]');
         this.deleteRegisterDialogueBox = page.locator('//div[contains(@class,"v-dialog--active")]');
         this.registerDeletedMessagebox = page.locator('//div[@class="snackbar__content--main"]');
+        this.addPosButton = page.locator("//span[text()=' Add POS system ']");
+        this.devicesvisibe=page.locator("(//div[text()=' Devices '])[1]")
     }
 
     async GotoDashboardPage() {
-        await this.Dashboard.first().waitFor({state: 'visible'}); //this will wait for the specified element in dom
+        await this.Dashboard.first().waitFor({ state: 'visible' }); //this will wait for the specified element in dom
         await excuteSteps(test, this.Dashboard, "click", "clicking on the dashboard")
         await expect(this.Dashboard).toBeVisible();
+        await this.Dashboard.waitFor();
 
     }
     async DevicesPage() {
-        await expect(this.Devices).toBeVisible();
-        console.log("Device is visible");
+        // await expect(this.Devices).toBeVisible();
+        // console.log("Device is visible");
+        await this.Devices.waitFor({ state: 'visible'});
     }
     async ScrollToPos() {
         await this.PosSystems.scrollIntoViewIfNeeded();
@@ -45,10 +48,10 @@ export class DashboardPage {
         await excuteSteps(test, this.Settings, "click", "clicking on the settings")
     }
 
-    async kabebMenuAnd(){
+    async kabebMenuAnd() {
         // await this.cababmenu.scrollIntoViewIfNeeded();
         // await this.cababmenu.first().waitFor({state:'visible'});
-        await excuteSteps(test,this.cababmenu,"click","click on the kabeb menu");
+        await excuteSteps(test, this.cababmenu, "click", "click on the kabeb menu");
     }
     async ListOfPos() {
         const poss = this.NoOfPos;   // locator
@@ -60,23 +63,22 @@ export class DashboardPage {
             console.log(title);
         }
     }
-    async clickAddDeviceButton(){
-        await expect(this.btnAddDevice).toBeVisible(); 
-        await excuteSteps(test,this.btnAddDevice,"click","click on Add device button");
-        // await this.btnAddDevice.click();
-        await expect(this.addDeviceOptionsLayout).toBeVisible();
+    async clickAddDeviceButton() {
+        await this.btnAddDevice.waitFor({state:'visible'});
+        await expect(this.btnAddDevice).toBeVisible();
+        await excuteSteps(test, this.btnAddDevice, "click", "click on Add device button");
     }
-    async selectDeviceTypeInAddDevice(deviceType){
+    async selectDeviceTypeInAddDevice(deviceType) {
         await this.page.waitForTimeout(parseInt(process.env.SMALL_WAIT)); //need to remove hard wait
         await this.clickAddDeviceButton();
-        await excuteSteps(test,this.addDevice(deviceType),"click",`click ${deviceType} in Add devices options`);
+        await excuteSteps(test, this.addDevice(deviceType), "click", `click ${deviceType} in Add devices options`);
     }
 
-    async verifyRegisterExistInSquarePOS(registerName){
-        await excuteSteps(test,this.squarePOSExpandBtn,"click","click on expand btn for square POS ");
+    async verifyRegisterExistInSquarePOS(registerName) {
+        await excuteSteps(test, this.squarePOSExpandBtn, "click", "click on expand btn for square POS ");
         // await this.squarePOSExpandBtn.click();
     }
-    async deleteRegister(registerName){
+    async deleteRegister(registerName) {
         await this.registerMenu(registerName).click();
         await this.deleteRegisterTxt.click();
         expect(this.deleteRegisterDialogueBox).toContainText('You are about to delete the register');
@@ -84,8 +86,16 @@ export class DashboardPage {
         await expect(this.registerDeletedMessagebox).toBeVisible();
         await expect(this.registerDeletedMessagebox).toContainText('was successfuly removed from Dashboard');
     }
-    async deletePOSSystem(){
+
+
+    async addposbutton() {
         
+        await excuteSteps(this.test, this.addPosButton, "click", "Clicking On pos Button");
+        // if (this.addPosButton.toBeVisible()) {
+        //     await excuteSteps(this.test, this.addPosButton, "click", "Clicking On pos Button");
+        // }
+
+
     }
 }
 
