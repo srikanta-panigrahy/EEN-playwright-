@@ -1,7 +1,6 @@
 const { test } = require('@playwright/test');
 const sections = require('../pages/pageIndex');
 const devices = require("../test_Data/addDeviceOptions.json")
-const { createTransaction } = require("../utilities/CreateTransactions.js");
 
 test.describe('@regression Add register and delete register', async () => {
     let context

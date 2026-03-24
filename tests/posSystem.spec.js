@@ -28,7 +28,7 @@ test.describe('@regression Add register and delete register', async () => {
         await posSystemPage.verifyPosSystemPageAppeard();
         await posSystemPage.clickPOSRegisterTab();
         await posSystemPage.clickPlusIcon();
-        await posSystemPage.SelectRegister(devices.registerOptions[0]);
+        await posSystemPage.SelectRegister(devices.SquareRegisterOptions[0]);
         await posSystemPage.clickAddRegister();
     
         await posSystemPage.SelectSite();
@@ -37,9 +37,19 @@ test.describe('@regression Add register and delete register', async () => {
         await posSystemPage.veifySuccessmessage();
         await posSystemPage.clickSaveAndExitBtn();
         await dashboardpage.ScrollToPos();
-        await dashboardpage.verifyRegisterExistInSquarePOS();
-        await dashboardpage.deleteRegister(devices.registerOptions[0]);
+        await dashboardpage.expandSquaewPOSSystem();
+        await dashboardpage.verifyRegisterExistInSquarePOS(devices.SquareRegisterOptions[0]);
+        await dashboardpage.deleteRegister(devices.SquareRegisterOptions[0]);
+    })
 
 
+    test('EEPD-TC-34628 Invlid register name',async()=>{
+        const dashboardpage = new sections.DashboardPage(page, test);
+        const posSystemPage = new sections.PosSystemPage(page, test);
+
+        await dashboardpage.selectDeviceTypeInAddDevice(devices.invlidRegisterName);
+        await posSystemPage.verifyPosSystemPageAppeard();
+        await posSystemPage.clickPOSRegisterTab();
+        await posSystemPage.clickPlusIcon();
     })
 })

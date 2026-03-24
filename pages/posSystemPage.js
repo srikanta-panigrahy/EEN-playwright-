@@ -21,6 +21,7 @@ export class PosSystemPage {
         this.storeAndRegisterFilterBox = page.locator('//input[@data-testid="pos-registers-sidebar-filter-input-box"]');
         this.storeOrRegisterCheckBox = (storeName)=> page.locator(`//span[@data-testid="tree-view-${storeName}"]/../span/div`);
         this.btnAddRegisters = page.getByTestId('pos-registers-add-button');
+        this.addRegisterpanelCancelBtn = page.getByTestId('sidebar-actions-cancel-btn');
         this.btnDeleteRegister = (registerName) => page.locator(`//div[normalize-space(text())="${registerName}"]/../../../following-sibling::td[3]/button`);
         // this.registerInTable = (registerName) => page.locator(`//div[normalize-space(text())="${registerName}"]`);
         this.btnCancle = page.locator('//button[@data-testid="pos-registers-cancel-button"]');
@@ -31,6 +32,12 @@ export class PosSystemPage {
         this.posDropdown=page.getByTestId("pos-integration-system-selector")
         this.Squarepos=page.locator("//div[contains(@class,'title') and text()='Square POS']")
         this.singintopos=page.locator("//span[text()=' Sign into Square POS ']")
+        
+        this.noMatchingRegister = page.getByTestId('pos-registers-sidebar-no-matching-results');
+        this.fieldRequired = page.locator("//div[@class ='v-messages__message']");
+        this.addedRegisters = page.locator('//tr//td//*[contains(@data-testid,"pos-registers-table-register-name:")]');
+
+
         
     }
 
@@ -93,7 +100,25 @@ export class PosSystemPage {
     }
     async veifySuccessmessage(){
         // await expect(this.successMessge).toBeVisible();
-        await expect(this.snackbarMessage).toHaveText('Success',{timeout: 20000});
+        await expect(this.snackbarMessage).toHaveText('Success',{timeout: 10000});
+    }
+    async searchRegister(register){
+        await excuteSteps(this.test, this.storeAndRegisterFilterBox, "fill", "searching register ",[register]);
+    }
+    async verifyNomatchingRegisterMessage(){
+        await expect(this.noMatchingRegister).toBeVisible();
+        await expect(this.noMatchingRegister).toContainText('No matching registers found')
+    }
+    async cameraRequiresErrorMessage(){
+        await expect(this.fieldRequired).toBeVisible();
+        await expect(this.fieldRequired).toHaveText('Field is required');
+    }
+    async clickCancelInAddRegisterPanel(){
+        await excuteSteps(this.test, this.addRegisterpanelCancelBtn, "click", "Click Canel in add register panel");
+    }
+
+    async registerNotPresent(register) {
+        await expect(this.addedRegisters.filter({ hasText: register })).toHaveCount(0);
     }
 
     async PosDrpDwn(){
