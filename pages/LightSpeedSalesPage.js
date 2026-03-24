@@ -11,16 +11,19 @@ export class LightSpeedSalePage{
         this.mainOutle = page.locator("//button[normalize-space()='Main Outlet']");
         this.registerSeven  = page.locator("//h3[normalize-space()='Main Outlet - Register 7']");
         this.availableItems = page.locator("//span[@class='vd-quick-key-label']");
-        this.payBtn = page.getByTestId('[data-testid="pay-btn"]')
+        this.payBtn = page.locator('//button[@data-testid="pay-btn"]');
+        this.cashPayment = page.locator('[data-id ="1"]');
+        this.receiveBilledAmount = page.locator('//button[@data-track="collect-cash"]');
+        this.completeSaleBtn = page.getByTestId('complete-action-button')
             
     }
     async navigateaToLightSpeedSignInPage(){
-        await page.goto(process.env.LIGHTSPEED_URL);
-        await expect(page).toHaveURL(/signin/);
+        await this.page.goto(process.env.LIGHTSPEED_URL);
+        await expect(this.page).toHaveURL(/signin/);
     }
     async enteruserName(){
         await this.userName.fill(process.env.LS_USERNAME);
-        await expect(this.userName).toContainText(process.env.LS_USERNAME)
+        await expect(this.userName).toHaveValue(process.env.LS_USERNAME);
 
     }
     async enterPassword(){
@@ -56,7 +59,16 @@ export class LightSpeedSalePage{
         }
     }
     async clickPay(){
-        this.payBtn.click();
+        await expect(this.payBtn).toBeVisible();
+        await this.payBtn.click();
+    }
+
+    async receiveRequiredCash(){
+        await this.cashPayment.click();
+        await this.receiveBilledAmount.click();
+    }
+    async clickCompleteSaleBtn(){
+        await this.completeSaleBtn.click();
     }
 }
 

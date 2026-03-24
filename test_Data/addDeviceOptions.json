@@ -8,7 +8,9 @@
     "storeOptions":[
         "PoS-test-register"
     ],
-    "registerOptions":[
+    "SquareRegisterOptions":[
         "PoS-test-register-default"
-    ]
+    ],
+    "LightSpeedRegisterOption":["POS-Register-1"],
+    "invlidRegisterName":"Invlid register Name"
 }
