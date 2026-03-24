@@ -18,7 +18,6 @@ test.describe('@smoke Login page test', async () => {
 
     test('Login with valid credentials', async () => {
         const loginPage = new sections.LoginPage(page, test);
-
         await loginPage.login([process.env.USER_EMAIL], [process.env.USER_PASSWORD]);
     })
 

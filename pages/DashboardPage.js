@@ -10,8 +10,7 @@ export class DashboardPage {
         this.Dashboard = page.locator('//div[text()=" Dashboard "]')
         this.Devices = page.locator('//div[contains(@class,"page-title__name") and normalize-space()="Devices"]')
         this.btnAddDevice = page.locator('//button[normalize-space()="Add device"]')
-        this.addDeviceOptionsLayout= page.locator("//div[@role='menu' and contains(@class,'drop-down-menu')]");
-
+        this.addDeviceOptionsLayout = page.locator("//div[@role='menu' and contains(@class,'drop-down-menu')]");
         this.PosSystems = page.locator('//div/div[normalize-space()="POS systems"]')
         this.NoOfPos = page.locator('//div[@data-testid="pos-systems-table"]//table//tbody')
         this.lightSpeedCababmenu = page.locator('//div[contains(@class,"device-action-button") and contains(@data-testid,"pos-systems-table-dropdown-menu:lightspeed-x")]');
@@ -33,15 +32,18 @@ export class DashboardPage {
         this.deleteSystemBtn = page.locator("//button[text()=' Delete system ']");
     }
 
+
     async GotoDashboardPage() {
-        await this.Dashboard.first().waitFor({state: 'visible'}); //this will wait for the specified element in dom
-        await excuteSteps(test, this.Dashboard, "click", "clicking on the dashboard");
+        await this.Dashboard.first().waitFor({ state: 'visible' }); //this will wait for the specified element in dom
+        await excuteSteps(test, this.Dashboard, "click", "clicking on the dashboard")
         await expect(this.Dashboard).toBeVisible();
+        await this.Dashboard.waitFor();
 
     }
     async DevicesPage() {
-        await expect(this.Devices).toBeVisible();
-        console.log("Device is visible");
+        // await expect(this.Devices).toBeVisible();
+        // console.log("Device is visible");
+        await this.Devices.waitFor({ state: 'visible'});
     }
     async ScrollToPos() {
         await this.PosSystems.scrollIntoViewIfNeeded();
@@ -53,7 +55,7 @@ export class DashboardPage {
         await excuteSteps(test, this.Settings, "click", "clicking on the settings")
     }
 
-    async kabebMenuAnd(){
+    async kabebMenuAnd() {
         // await this.cababmenu.scrollIntoViewIfNeeded();
         // await this.cababmenu.first().waitFor({state:'visible'});
         await excuteSteps(test,this.lightSpeedCababmenu,"click","click on the Light Speed kabeb menu");
@@ -77,7 +79,7 @@ export class DashboardPage {
     async selectDeviceTypeInAddDevice(deviceType){
         await this.page.waitForTimeout(parseInt(process.env.SMALL_WAIT)); //need to remove hard wait
         await this.clickAddDeviceButton();
-        await excuteSteps(test,this.addDevice(deviceType),"click",`click ${deviceType} in Add devices options`);
+        await excuteSteps(test, this.addDevice(deviceType), "click", `click ${deviceType} in Add devices options`);
     }
 
     async verifyRegisterExistInPosSytem(registerName){
@@ -88,7 +90,7 @@ export class DashboardPage {
         const register = this.registerName(registerName)
         await expect(register).not.toBeVisible();
     }
-    async deleteRegister(registerName){
+    async deleteRegister(registerName) {
         await this.registerMenu(registerName).click();
         await this.deleteRegisterTxt.click();
         expect(this.deleteRegisterDialogueBox).toContainText(`You are about to delete the register ${registerName}. It will be deleted from your dashboard`);
@@ -123,7 +125,16 @@ export class DashboardPage {
             }
         }else{
             console.log('No registers present in Dashboard page for LIght speed POS');
-        }     
+        }
+    }      
+    async addposbutton() {
+        
+        await excuteSteps(this.test, this.addPosButton, "click", "Clicking On pos Button");
+        // if (this.addPosButton.toBeVisible()) {
+        //     await excuteSteps(this.test, this.addPosButton, "click", "Clicking On pos Button");
+        // }
+
+
     }
 
     async cababMenuOptions(){

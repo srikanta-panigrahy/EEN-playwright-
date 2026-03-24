@@ -11,19 +11,24 @@ export class LightSpeedSalePage{
         this.mainOutle = page.locator("//button[normalize-space()='Main Outlet']");
         this.registerSeven  = page.locator("//h3[normalize-space()='Main Outlet - Register 7']");
         this.availableItems = page.locator("//span[@class='vd-quick-key-label']");
-        this.payBtn = page.locator('//button[@data-testid="pay-btn"]');
-        this.cashPayment = page.locator('[data-id ="1"]');
-        this.receiveBilledAmount = page.locator('//button[@data-track="collect-cash"]');
-        this.completeSaleBtn = page.getByTestId('complete-action-button')
+        this.payBtn = page.getByTestId("pay-btn")
+        this.cashBtn=page.locator("(//button[contains(@class,'vd-btn--jumbo')])[2]");
+        this.cashInputBox=page.getByPlaceholder("0.00")
             
     }
     async navigateaToLightSpeedSignInPage(){
         await this.page.goto(process.env.LIGHTSPEED_URL);
         await expect(this.page).toHaveURL(/signin/);
     }
+
+    async navigateToSquareSingInPage(){
+        // await this.page.goto(process.env.SQUARE_URL);
+        
+        await expect(this.page).toHaveTitle("Square: Sign in to Your Dashboard & Manage your Business")
+    }
     async enteruserName(){
         await this.userName.fill(process.env.LS_USERNAME);
-        await expect(this.userName).toHaveValue(process.env.LS_USERNAME);
+        await expect(this.userName).toHaveValue(process.env.LS_USERNAME)
 
     }
     async enterPassword(){
@@ -62,13 +67,9 @@ export class LightSpeedSalePage{
         await expect(this.payBtn).toBeVisible();
         await this.payBtn.click();
     }
-
-    async receiveRequiredCash(){
-        await this.cashPayment.click();
-        await this.receiveBilledAmount.click();
-    }
-    async clickCompleteSaleBtn(){
-        await this.completeSaleBtn.click();
+    async CashButton(){
+        await expect(this.cashbtn).toBeVisible();
+        await this.cashbtn.click();
     }
 }
 
