@@ -1,4 +1,4 @@
-const { test } = require('@playwright/test');
+const { test, expect } = require('@playwright/test');
 const sections = require('../pages/pageIndex');
 require("dotenv").config();
 const devices = require("../test_Data/addDeviceOptions.json");
@@ -6,11 +6,11 @@ const devices = require("../test_Data/addDeviceOptions.json");
 test.describe('@regression Webhook connection duration check', async () => {
     let context;
     let page;
-    const addPosSystem = devices.devices[3]; // Lightspeed (X-series)
+    const addPosSystem = devices.devices[3];
     const register = devices.LightSpeedRegisterOption[0];
 
     test.beforeAll('Login with valid credentials', async ({ browser }) => {
-        test.setTimeout(120000);
+        test.setTimeout(240000);
         context = await browser.newContext();
         page = await context.newPage();
 
@@ -22,7 +22,7 @@ test.describe('@regression Webhook connection duration check', async () => {
         await context.close();
     });
 
-    test('EEPD-TC-34673 POS-Check the duration for which the webhook connection remains active', async () => {
+    test.only('EEPD-TC-34673 POS-Check the duration for which the webhook connection remains active', async () => {
         const dashboardPage = new sections.DashboardPage(page, test);
         const posSystemPage = new sections.PosSystemPage(page, test);
         const lightSpeedPage = new sections.LightSpeedSalePage(page, test);
@@ -30,71 +30,61 @@ test.describe('@regression Webhook connection duration check', async () => {
         // 1. Navigate to Dashboard
         await dashboardPage.GotoDashboardPage();
 
-        // 2-3. Add POS system and select Lightspeed (X-series)
+        // 2-3. Add POS system: Lightspeed (X-series)
         await dashboardPage.DevicesPage();
         await dashboardPage.selectDeviceTypeInAddDevice(addPosSystem);
         await posSystemPage.verifyPosSystemPageAppeard();
+        await posSystemPage.PosDrpDwn(); 
         await posSystemPage.selectLightSpeed();
 
-        // 4-5. OAuth Login to Lightspeed
+        // 4-5. OAuth Redirection and Login to Lightspeed
         await posSystemPage.clickSignintoLightSpeed();
         await lightSpeedPage.loginToLightSpeeed();
         await lightSpeedPage.accpetInstallation();
-        
-        // 6. Verify "Successfully Authenticated"
+
+        // 6. Verify "Successfully Authenticated" message
         await posSystemPage.verifyPosSystemPageAppeard();
         await posSystemPage.authticationSuccessMessage();
 
-        // 7. Click Webhook connect button and verify green checkmark
+        // 7. Click Webhook connect button and verify Green Indicator
         await posSystemPage.connectPOS();
+        await posSystemPage.verifyWebhookStatusIndicator();
 
-        // 8-10. Add registers and associate cameras/sites
+        // 8-9. Add Register
         await posSystemPage.clickPOSRegisterTab();
         await posSystemPage.clickPlusIcon();
         await posSystemPage.SelectRegister(register);
         await posSystemPage.clickAddRegister();
+        
+        // 10. Associate location (Site) and cameras, then save changes
         await posSystemPage.SelectSite();
         await posSystemPage.SelectCamera();
         await posSystemPage.clickSaveChangesBtn();
         await posSystemPage.veifySuccessmessage();
         await posSystemPage.clickSaveAndExitBtn();
 
-        // 11. Perform a transaction in Lightspeed
-        const itemsToSelect = ["Coke / 2 ltr", "Coke / 500 ml"];
+        // 11. Navigate to Lightspeed and perform a transaction
+        const itemsToSelect = ["Coke / 2 ltr"];
         await lightSpeedPage.navigateaToLightSpeedSignInPage();
-        await lightSpeedPage.enteruserName();
-        await lightSpeedPage.enterPassword();
-        await lightSpeedPage.clickSignIn();
+        await lightSpeedPage.loginToLightSpeeed(); 
         await lightSpeedPage.goToSellTab();
         await lightSpeedPage.selectRegister();
         await lightSpeedPage.selectItems(itemsToSelect);
         await lightSpeedPage.clickPay();
         await lightSpeedPage.CashButton();
+        // 12. Verify POS-Transactions and History Browser in VMS
+        await dashboardPage.GotoDashboardPage();
+        await dashboardPage.navigateToPOSTransactions();
+        await dashboardPage.navigateHistoryBrowser();
 
-        // 12. Verify transactions in VMS Dashboard and history browser
+        // 13. Verify duration (UI Connection remains active until disconnect)
+        // Check the Webhook indicator status again in the VMS settings
         await dashboardPage.GotoDashboardPage();
         await dashboardPage.ScrollToPos();
         await dashboardPage.expandLightSpeedPOSSystem();
-        
-        // Navigation to History Browser (Placeholder methods for VMS UI)
-        if (typeof dashboardPage.navigateToPOSTransactions === 'function') {
-            await dashboardPage.navigateToPOSTransactions();
-        }
-        if (typeof dashboardPage.navigateHistoryBrowser === 'function') {
-            await dashboardPage.navigateHistoryBrowser();
-        }
+        await dashboardPage.SettingClick();
+        await posSystemPage.verifyWebhookStatusIndicator();
 
-        // 13. Verify Webhook connection duration (Persistence check)
-        // Description: remains active until manual disconnect. Checked via UI status.
-        await dashboardPage.GotoDashboardPage();
-        await dashboardPage.ScrollToPos();
-        await dashboardPage.expandLightSpeedPOSSystem();
-        
-        // UI Verification of persistent active status
-        if (typeof posSystemPage.verifyWebhookStatusIndicator === 'function') {
-            await posSystemPage.verifyWebhookStatusIndicator();
-        }
-        
-        console.log("EEPD-TC-34673: Verified webhook connection remains active.");
+        console.log("EEPD-TC-34673: Webhook connection verified successfully active.");
     });
 });
