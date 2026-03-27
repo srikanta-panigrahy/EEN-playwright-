@@ -107,7 +107,7 @@ test.describe('@smoke Login page test', async () => {
 
     })
 
-    test.only('EEPD-TC-34577,NEG-Verify that the "Registers" tab is not clickable without user authentication.', async () => {
+    test('EEPD-TC-34577,NEG-Verify that the "Registers" tab is not clickable without user authentication.', async () => {
         const loginPage = new sections.LoginPage(page, test);
         const LightSpeedSalePage = new sections.LightSpeedSalePage(page, test);
         const DashboardPage = new sections.DashboardPage(page, test);
@@ -124,5 +124,4 @@ test.describe('@smoke Login page test', async () => {
     })
 
 })
-
 

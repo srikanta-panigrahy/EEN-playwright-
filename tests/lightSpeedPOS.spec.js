@@ -93,7 +93,7 @@ test.describe('@regression Light Speed POS test cases', async () => {
 
     })
 
-    test('Delete all registers',async()=>{
+    test('Delete all registers and Light Speed POS System',async()=>{
         const dashboardpage = new sections.DashboardPage(page, test);
         const posSystemPage = new sections.PosSystemPage(page, test);
 
@@ -107,4 +107,33 @@ test.describe('@regression Light Speed POS test cases', async () => {
         await dashboardpage.deleteLightSpeedPOSSystem();
 
     })
+    test('EEPD-TC-34631 POS-Verify VMS Navigation Button on Lightspeed',async()=>{
+        const dashboardpage = new sections.DashboardPage(page, test);
+        const posSystemPage = new sections.PosSystemPage(page, test);
+        const lightSpeedPage = new sections.LightSpeedSalePage(page, test);
+
+        await dashboardpage.GotoDashboardPage();
+        await dashboardpage.selectDeviceTypeInAddDevice(addPosSystem);
+        await posSystemPage.selectLightSpeed();
+        await posSystemPage.clickSignintoLightSpeed();
+        await posSystemPage.backToVMSPageAndVerify();
+    })
+    test('EEPD-TC-34587 POS-Enter valid login credentials on the Lightspeed or Square login page.',async()=>{
+         test.setTimeout(60000)
+        const dashboardpage = new sections.DashboardPage(page, test);
+        const posSystemPage = new sections.PosSystemPage(page, test);
+        const lightSpeedPage = new sections.LightSpeedSalePage(page, test);
+
+        await dashboardpage.GotoDashboardPage();
+        await dashboardpage.selectDeviceTypeInAddDevice(addPosSystem);
+        await posSystemPage.selectLightSpeed();
+        await posSystemPage.clickSignintoLightSpeed();
+        await lightSpeedPage.loginToLightSpeeed();
+        await lightSpeedPage.accpetInstallation();
+        await posSystemPage.verifyPosSystemPageAppeard();
+        await posSystemPage.authticationSuccessMessage();
+        await posSystemPage.connectPOS();  
+    })
+
+
 })

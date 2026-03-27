@@ -27,8 +27,8 @@ export class PosSystemPage {
         this.btnCancle = page.locator('//button[@data-testid="pos-registers-cancel-button"]');
         this.btnSaveChanges = page.locator('//button[@data-testid="pos-registers-save-changes-button"]');
         this.btnSaveAndExit = page.locator('//button[@data-testid="pos-registers-save-and-exit-button"]');
-        this.successMessge = page.locator('//span[normalize-space(text())="Success"]');
-        this.snackbarMessage = page.locator('//span[@class="snackbar__content--title"]');
+        this.snackbarMessageTitle = page.locator('//span[@class="snackbar__content--title"]');
+        this.snackbarMessageBody = page.locator('//div[@class="snackbar__content--main"]');
         this.posDropdown=page.getByTestId("pos-integration-system-selector")
         this.Squarepos=page.locator("//div[contains(@class,'title') and text()='Square POS']")
         this.singintopos=page.locator("//span[text()=' Sign into Square POS ']")
@@ -36,8 +36,13 @@ export class PosSystemPage {
         this.noMatchingRegister = page.getByTestId('pos-registers-sidebar-no-matching-results');
         this.fieldRequired = page.locator("//div[@class ='v-messages__message']");
         this.addedRegisters = page.locator('//tr//td//*[contains(@data-testid,"pos-registers-table-register-name:")]');
-
-
+        this.lightSpeedPos = page.locator("//div[contains(@class,'title') and text()='Lightspeed POS (X-Series)']");
+        this.signIntoLightSpeedPos = page.locator("//span[text()=' Sign into Lightspeed POS (X-Series) ']");
+        
+        this.lightSpeedToolTip = page.locator('//span[text()=" Please sign into Lightspeed POS (X-Series) "] ');
+        this.icon=page.locator("//span[contains(@data-testid,'tooltip')]/following-sibling::span[1]");
+        this.posIntegrationType = page.getByTestId('pos-integration-system-auth-type');
+        this.connectButton = page.getByTestId('pos-integration-system-connect-button');
         
     }
 
@@ -100,7 +105,7 @@ export class PosSystemPage {
     }
     async veifySuccessmessage(){
         // await expect(this.successMessge).toBeVisible();
-        await expect(this.snackbarMessage).toHaveText('Success',{timeout: 10000});
+        await expect(this.snackbarMessageTitle).toHaveText('Success',{timeout: 10000});
     }
     async searchRegister(register){
         await excuteSteps(this.test, this.storeAndRegisterFilterBox, "fill", "searching register ",[register]);
@@ -133,7 +138,6 @@ export class PosSystemPage {
         await expect(this.Squarepos).toBeVisible();
         await excuteSteps(this.test,this.Squarepos,"click","clicking on the pos");
     }
-
     
     
    
