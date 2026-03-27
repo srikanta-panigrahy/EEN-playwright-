@@ -24,8 +24,7 @@ test.describe('@smoke Login page test', async () => {
         await loginPage.launchAppAndLoginWithValidCredentials();
         await DashboardPage.GotoDashboardPage();
         await DashboardPage.DevicesPage();
-        await DashboardPage.clickAddDeviceButton();
-        await DashboardPage.addposbutton();
+        await DashboardPage.selectDeviceTypeInAddDevice('Add POS system');
         await posSystemPage.PosDrpDwn();
         await posSystemPage.clickOnPos();
         await posSystemPage.SingInToPos();
@@ -35,10 +34,11 @@ test.describe('@smoke Login page test', async () => {
         await SquarePosPage.EnterPassword();
         await SquarePosPage.SingInBtn();
         await SquarePosPage.Invalidpassword();
+        await SquarePosPage.logOutFromVMS();
 
     })
 
-    test('EEPD-TC-34581, POS-Click on Sign into Lightspeed (X-Series)" button.',async()=>{
+    test('EEPD-TC-34581, POS-Click on Sign into Lightspeed (X-Series)" button.', async () => {
         const loginPage = new sections.LoginPage(page, test);
         const LightSpeedSalePage = new sections.LightSpeedSalePage(page, test);
         const DashboardPage = new sections.DashboardPage(page, test);
@@ -47,8 +47,7 @@ test.describe('@smoke Login page test', async () => {
         await loginPage.launchAppAndLoginWithValidCredentials();
         await DashboardPage.GotoDashboardPage();
         await DashboardPage.DevicesPage();
-        await DashboardPage.clickAddDeviceButton();
-        await DashboardPage.addposbutton();
+        await DashboardPage.selectDeviceTypeInAddDevice('Add POS system');
         await posSystemPage.PosDrpDwn();
         await posSystemPage.clickOnPos();
         await posSystemPage.SingInToPos();
@@ -58,8 +57,8 @@ test.describe('@smoke Login page test', async () => {
 
     })
 
-    
-    test.only('EEPD-TC-34580,POS-Verify the mouse over text next to Oauth:Sign into Lightspeed(X-series) button',async()=>{
+
+    test('EEPD-TC-34580,POS-Verify the mouse over text next to Oauth:Sign into Lightspeed(X-series) button', async () => {
         const loginPage = new sections.LoginPage(page, test);
         const LightSpeedSalePage = new sections.LightSpeedSalePage(page, test);
         const DashboardPage = new sections.DashboardPage(page, test);
@@ -68,11 +67,59 @@ test.describe('@smoke Login page test', async () => {
         await loginPage.launchAppAndLoginWithValidCredentials();
         await DashboardPage.GotoDashboardPage();
         await DashboardPage.DevicesPage();
-        await DashboardPage.clickAddDeviceButton();
-        await DashboardPage.addposbutton();
+        await DashboardPage.selectDeviceTypeInAddDevice('Add POS system');
         await posSystemPage.PosDrpDwn();
         await posSystemPage.clickOnPos();
         await SquarePosPage.iIcon();
+        await SquarePosPage.textVerify();
+
+    })
+
+    test('EEPD-TC-34579,POS-Navigate to the Dashboard and click the "+" icon to add a POS system.', async () => {
+        const loginPage = new sections.LoginPage(page, test);
+        const LightSpeedSalePage = new sections.LightSpeedSalePage(page, test);
+        const DashboardPage = new sections.DashboardPage(page, test);
+        const posSystemPage = new sections.PosSystemPage(page, test);
+        const SquarePosPage = new sections.SquarePosPage(page, test);
+        await loginPage.launchAppAndLoginWithValidCredentials();
+        await DashboardPage.GotoDashboardPage();
+        await DashboardPage.DevicesPage();
+        await DashboardPage.selectDeviceTypeInAddDevice('Add POS system');
+        await SquarePosPage.PosSystemOptions();
+        await posSystemPage.PosDrpDwn();
+        await SquarePosPage.Logoutfromcurrentpage();
+
+
+    })
+
+     test('EEPD-TC-34578,NEG-Verify that the "Registers" tab is not clickable without user authentication.', async () => {
+        const loginPage = new sections.LoginPage(page, test);
+        const LightSpeedSalePage = new sections.LightSpeedSalePage(page, test);
+        const DashboardPage = new sections.DashboardPage(page, test);
+        const posSystemPage = new sections.PosSystemPage(page, test);
+        const SquarePosPage = new sections.SquarePosPage(page, test);
+        await loginPage.launchAppAndLoginWithValidCredentials();
+        await DashboardPage.GotoDashboardPage();
+        await DashboardPage.DevicesPage();
+        await DashboardPage.selectDeviceTypeInAddDevice('Add POS system');
+        await SquarePosPage.RegistersDisableOrNot();
+
+
+    })
+
+    test.only('EEPD-TC-34577,NEG-Verify that the "Registers" tab is not clickable without user authentication.', async () => {
+        const loginPage = new sections.LoginPage(page, test);
+        const LightSpeedSalePage = new sections.LightSpeedSalePage(page, test);
+        const DashboardPage = new sections.DashboardPage(page, test);
+        const posSystemPage = new sections.PosSystemPage(page, test);
+        const SquarePosPage = new sections.SquarePosPage(page, test);
+        await loginPage.launchAppAndLoginWithValidCredentials();
+        await DashboardPage.GotoDashboardPage();
+        await DashboardPage.DevicesPage();
+        await DashboardPage.selectDeviceTypeInAddDevice('Add POS system');
+        await SquarePosPage.checkingPosIsSelectedOrNot();
+        await SquarePosPage.WithoutSelectingPosIndropDeown();
+
 
     })
 

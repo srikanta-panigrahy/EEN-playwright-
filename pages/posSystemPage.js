@@ -133,6 +133,8 @@ export class PosSystemPage {
         await expect(this.Squarepos).toBeVisible();
         await excuteSteps(this.test,this.Squarepos,"click","clicking on the pos");
     }
+
+    
     
    
 }

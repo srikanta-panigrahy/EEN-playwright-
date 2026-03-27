@@ -3,7 +3,7 @@ const sections = require('../pages/pageIndex');
 require("dotenv").config();
 const devices = require("../test_Data/addDeviceOptions.json")
 
-test.describe.only('@regression Light Speed POS test cases', async () => {
+test.describe('@regression Light Speed POS test cases', async () => {
     let context
     let page;
     const addPosSystem = devices.devices[3];
@@ -21,7 +21,7 @@ test.describe.only('@regression Light Speed POS test cases', async () => {
          await context.close();
     })
 
-    test.only("EEPD-TC-34627,EEPD-TC-34624 Add Register, Delete Register", async () => {
+    test("EEPD-TC-34627,EEPD-TC-34624 Add Register, Delete Register", async () => {
         const dashboardpage = new sections.DashboardPage(page, test);
         const posSystemPage = new sections.PosSystemPage(page, test);
       
