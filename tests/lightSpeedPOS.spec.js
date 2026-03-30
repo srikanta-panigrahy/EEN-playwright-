@@ -93,9 +93,8 @@ test.describe('@regression Light Speed POS test cases', async () => {
 
     })
 
-    test('Delete all registers and Light Speed POS System',async()=>{
+    test('EEPD-TC-34622 Delete all registers and Light Speed POS System',async()=>{
         const dashboardpage = new sections.DashboardPage(page, test);
-        const posSystemPage = new sections.PosSystemPage(page, test);
 
         await dashboardpage.GotoDashboardPage();
         await dashboardpage.ScrollToPos();
@@ -103,20 +102,19 @@ test.describe('@regression Light Speed POS test cases', async () => {
         await page.waitForTimeout(parseInt(process.env. SMALL_WAIT));
         await dashboardpage.deleteAllAddedRegisters();
         await dashboardpage.kabebMenuAnd();
-        await dashboardpage.cababMenuOptions();
+        await dashboardpage.actionButtons();
         await dashboardpage.deleteLightSpeedPOSSystem();
 
     })
-    test('EEPD-TC-34631 POS-Verify VMS Navigation Button on Lightspeed',async()=>{
+    test('EEPD-TC-34581	POS-Click on Sign into Lightspeed (X-Series)" button.',async()=>{
         const dashboardpage = new sections.DashboardPage(page, test);
         const posSystemPage = new sections.PosSystemPage(page, test);
-        const lightSpeedPage = new sections.LightSpeedSalePage(page, test);
 
         await dashboardpage.GotoDashboardPage();
         await dashboardpage.selectDeviceTypeInAddDevice(addPosSystem);
         await posSystemPage.selectLightSpeed();
+        //verify click on sign in to light speed it will navigate to light speed login page
         await posSystemPage.clickSignintoLightSpeed();
-        await posSystemPage.backToVMSPageAndVerify();
     })
     test('EEPD-TC-34587 POS-Enter valid login credentials on the Lightspeed or Square login page.',async()=>{
          test.setTimeout(60000)
@@ -128,12 +126,49 @@ test.describe('@regression Light Speed POS test cases', async () => {
         await dashboardpage.selectDeviceTypeInAddDevice(addPosSystem);
         await posSystemPage.selectLightSpeed();
         await posSystemPage.clickSignintoLightSpeed();
-        await lightSpeedPage.loginToLightSpeeed();
+        await lightSpeedPage.loginToLightSpeeedWithValidCredentials();
         await lightSpeedPage.accpetInstallation();
         await posSystemPage.verifyPosSystemPageAppeard();
         await posSystemPage.authticationSuccessMessage();
         await posSystemPage.connectPOS();  
     })
+    test('EEPD-TC-34580,EEPD-TC-34578 NEG-Verify that the "Registers" tab is not clickable without user authentication.',async()=>{
+        const dashboardpage = new sections.DashboardPage(page, test);
+        const posSystemPage = new sections.PosSystemPage(page, test);
+
+        await dashboardpage.GotoDashboardPage();
+        await dashboardpage.selectDeviceTypeInAddDevice(addPosSystem);
+        await posSystemPage.selectLightSpeed();
+        //verify tooltip and registers tab should be disabled before login to light speed
+        await posSystemPage.verifySigninIconToolTipBeforeloginTOLightSpeed();
+        //Registers tab should be disabled before login to light speed
+        await posSystemPage.addRegisterTabShouldBeDisabled();
+    });
+
+    test('EEPD-TC-34577 NEG-POS system selection is missing',async()=>{	
+        const dashboardpage = new sections.DashboardPage(page, test);
+        const posSystemPage = new sections.PosSystemPage(page, test);
+
+        await dashboardpage.GotoDashboardPage();
+        await dashboardpage.selectDeviceTypeInAddDevice(addPosSystem);
+        await posSystemPage.verifySignInOptionNotDisplayed();    
+    })
+
+    test('EEPD-TC-34582 NEG-Enter invalid login credentials on the Lightspeed login pag',async()=>{	
+        const dashboardpage = new sections.DashboardPage(page, test);
+        const posSystemPage = new sections.PosSystemPage(page, test);
+        const lightSpeedPage = new sections.LightSpeedSalePage(page, test);
+
+        await dashboardpage.GotoDashboardPage();
+        await dashboardpage.selectDeviceTypeInAddDevice(addPosSystem);
+        await posSystemPage.selectLightSpeed();
+        await posSystemPage.clickSignintoLightSpeed();
+        await lightSpeedPage.loginToLightSpeedWith("invalidUser@123","InvaliPass@123");
+        await lightSpeedPage.verifyInvalidLoginCredentialMessage();
+        
+        //step mentoind it will return to VMS, but its still in L-S Login page
+    })
+
 
 
 })

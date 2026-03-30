@@ -38,9 +38,13 @@ export class PosSystemPage {
         this.addedRegisters = page.locator('//tr//td//*[contains(@data-testid,"pos-registers-table-register-name:")]');
         this.lightSpeedPos = page.locator("//div[contains(@class,'title') and text()='Lightspeed POS (X-Series)']");
         this.signIntoLightSpeedPos = page.locator("//span[text()=' Sign into Lightspeed POS (X-Series) ']");
-
-        this.lightSpeedToolTip = page.locator('//span[text()=" Please sign into Lightspeed POS (X-Series) "] ');
-        this.icon = page.locator("//span[contains(@data-testid,'tooltip')]/following-sibling::span[1]");
+        
+        // this.lightSpeedToolTip = page.locator('//span[text()=" Please sign into Lightspeed POS (X-Series) "] ');
+        this.selectPosSystem = page.locator('//input[@placeholder="Select POS system"]');
+        this.iconForSigninto = page.locator("//span[contains(@data-testid,'tooltip')]/following-sibling::span[1]");
+        this.tooltipForsSigninto = page.locator('//span[@data-testid="tooltip"]'); 
+        this.iconForConnect=page.locator("//span[contains(@data-testid,'tooltip')]/following-sibling::span[2]");
+        
         this.posIntegrationType = page.getByTestId('pos-integration-system-auth-type');
         this.connectButton = page.getByTestId('pos-integration-system-connect-button');
 
@@ -149,11 +153,26 @@ export class PosSystemPage {
     async selectLightSpeed() {
         await excuteSteps(this.test, this.lightSpeedPos, "click", "Selecting Lightspeed POS (X-Series)");
     }
-    async clickSignintoLightSpeed() {
-        await excuteSteps(this.test, this.signIntoLightSpeedPos, "click", "Clicking Sign into Lightspeed POS (X-Series)");
+
+    async clickSignintoLightSpeed(){
+        await expect(this.signIntoLightSpeedPos).toBeVisible();
+        await excuteSteps(this.test,this.signIntoLightSpeedPos,"click","Clicking sign into lightspeed POS");
+        await this.page.waitForTimeout(3000)
+        await expect(this.page).toHaveTitle('Sign in to Lightspeed Retail POS Software | Lightspeed Retail');
     }
-    async authticationSuccessMessage() {
-        await expect(this.authSuccessMessage).toBeVisible();
+
+    // async backToVMSPageAndVerify(){
+    //     await this.page.goBack();
+    //     await expect(this.page).toHaveTitle('Eagle Eye Networks');
+    // }
+
+    async authticationSuccessMessage(){
+        await this.veifySuccessmessage();
+        await expect(this.snackbarMessageBody).toHaveText('Successfully authenticated');
+    }
+    async integrationType(){
+        await expect(this.posIntegrationType).toBeVisible();
+        await expect(this.posIntegrationType).toHaveText(' OAuth2 ')
     }
     async connectPOS() {
         await excuteSteps(this.test, this.connectButton, "click", "Clicking on the Connect button");
@@ -162,5 +181,18 @@ export class PosSystemPage {
         await expect(this.webhookStatusIcon).toBeVisible();
     }
 
+    async verifySigninIconToolTipBeforeloginTOLightSpeed(){
+        await this.iconForSigninto.hover();
+        await expect(this.tooltipForsSigninto).toBeVisible();
+        await expect(this.tooltipForsSigninto).toHaveText(" Please sign into Lightspeed POS (X-Series) ");
+    }
+    async addRegisterTabShouldBeDisabled(){
+        //await expect(this.posRegistersTab).toHaveClass(/v-tab--disabled/);
+        await expect(this.posRegistersTab).toContainClass('v-tab--disabled');
+    }
+    async verifySignInOptionNotDisplayed(){
+        await expect(this.selectPosSystem).toBeVisible();
+        await expect(this.signIntoLightSpeedPos).not.toBeVisible();
 
+    }
 }
