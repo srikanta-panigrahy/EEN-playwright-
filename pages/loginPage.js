@@ -53,4 +53,13 @@ export class LoginPage {
         await this.enterPassword([process.env.USER_PASSWORD]);
         await this.clickSignIn();
     }
+
+     async NonAdminlaunchAppAndLoginWithValidCredentials() {
+        // await this.navigateToLoginPage(process.env.BASE_URL);
+        await this.enterUserName([process.env.NON_ADMIN_USER]);
+        await this.clickNext();
+        await this.page.waitForTimeout(parseInt(process.env.SMALL_WAIT));
+        await this.enterPassword([process.env.NON_ADMIN_PASSWORD]);
+        await this.clickSignIn();
+    }
 }

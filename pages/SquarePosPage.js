@@ -11,7 +11,7 @@ export class SquarePosPage {
         this.password = page.locator('#password')
         this.Singin = page.getByTestId('login-password-submit-button');
         this.incorrectpassword = page.locator("//small[text()='Incorrect password. Please try again.']");
-        this.profile = page.locator("(//span[text()='JD'])[1]");
+        this.profile = page.locator("(//span[text()='TS'])[1]");
         this.logout = page.locator("//div[text()=' Logout ']");
         this.VerifySingin = page.locator("//h2[text()='Sign in']");
         this.Icon = page.locator("//span[contains(@data-testid,'tooltip')]/following-sibling::span");
@@ -123,4 +123,3 @@ export class SquarePosPage {
 
 
 }
-

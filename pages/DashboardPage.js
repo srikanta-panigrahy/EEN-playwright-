@@ -157,6 +157,12 @@ async navigateHistoryBrowser() {
     await excuteSteps(test, historyBrowser, "click", "Navigating to history browser");
 }
 
+async NottohaveAddposDevice(deviceType) {
+        await this.page.waitForTimeout(parseInt(process.env.SMALL_WAIT)); //need to remove hard wait
+        await this.clickAddDeviceButton();
+        await expect(this.addDevice(deviceType)).not.toBeVisible();
+    }
+
 }
 
 
