@@ -13,13 +13,26 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
+
     - name: Install dependencies
       run: npm ci
+
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+
     - name: Run Playwright tests
-      run: npx playwright test
-    - uses: actions/upload-artifact@v4
+      run: npx playwright test tests/Webhook.spec.js
+      env:
+        # This maps your GitHub Secrets to the Environment Variables your code uses
+        BASE_URL: ${{ secrets.BASE_URL }}
+        USER_EMAIL: ${{ secrets.USER_EMAIL }}
+        USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
+        SMALL_WAIT: 2000
+        MEDIUM_WAIT: 4000
+        LARGE_WAIT: 6000
+
+    - name: Upload Test Report
+      uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
         name: playwright-report

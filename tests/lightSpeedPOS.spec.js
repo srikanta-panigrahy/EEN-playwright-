@@ -3,7 +3,7 @@ const sections = require('../pages/pageIndex');
 require("dotenv").config();
 const devices = require("../test_Data/addDeviceOptions.json")
 
-test.describe.only('@regression Light Speed POS test cases', async () => {
+test.describe('@regression Light Speed POS test cases', async () => {
     let context
     let page;
     const addPosSystem = devices.devices[3];

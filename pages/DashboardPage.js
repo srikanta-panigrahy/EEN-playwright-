@@ -17,12 +17,12 @@ export class DashboardPage {
         this.Settings = page.getByTestId('Settings');
         this.editRegisters = page.getByTestId('Edit registers');
         this.deleteSystem = page.getByTestId('Delete system');
-
-        this.addDevice = (devicetype)=> page.getByTestId(devicetype);
+        this.addPosButton = page.getByTestId('Add POS system')
+        this.addDevice = (devicetype) => page.getByTestId(devicetype);
         this.squarePOSExpandBtn = page.locator('//*[@data-testid="pos-systems-table-system-name:square"]//div[contains(@class,"icon-wrapper")]')
         this.lightSpeedPOSExpandBtn = page.locator('//*[@data-testid="pos-systems-table-system-name:lightspeed-x"]//div[contains(@class,"icon-wrapper")]')
-        this.registerName = (register)=>page.locator(`//td[normalize-space()="${register}"]`); 
-        this.registerMenu = (register)=> page.locator(`//td[normalize-space()="${register}"]/../td[7]`);
+        this.registerName = (register) => page.locator(`//td[normalize-space()="${register}"]`);
+        this.registerMenu = (register) => page.locator(`//td[normalize-space()="${register}"]/../td[7]`);
         this.deleteRegisterTxt = page.locator('//div[@data-testid="Delete register"]');
         this.deleteRegisterBtnInDialogueBox = page.locator('//button[normalize-space(text())="Delete register"]');
         this.deleteRegisterDialogueBox = page.locator('//div[contains(@class,"v-dialog--active")]');
@@ -34,16 +34,15 @@ export class DashboardPage {
 
 
     async GotoDashboardPage() {
-        await this.Dashboard.first().waitFor({ state: 'visible' }); //this will wait for the specified element in dom
+        await this.page.waitForTimeout(parseInt(process.env.SMALL_WAIT));
         await excuteSteps(test, this.Dashboard, "click", "clicking on the dashboard")
-        await expect(this.Dashboard).toBeVisible();
-        await this.Dashboard.waitFor();
+
 
     }
     async DevicesPage() {
         // await expect(this.Devices).toBeVisible();
         // console.log("Device is visible");
-        await this.Devices.waitFor({ state: 'visible'});
+        await this.Devices.waitFor({ state: 'visible' });
     }
     async ScrollToPos() {
         await this.PosSystems.scrollIntoViewIfNeeded();
@@ -58,7 +57,7 @@ export class DashboardPage {
     async kabebMenuAnd() {
         // await this.cababmenu.scrollIntoViewIfNeeded();
         // await this.cababmenu.first().waitFor({state:'visible'});
-        await excuteSteps(test,this.lightSpeedCababmenu,"click","click on the Light Speed kabeb menu");
+        await excuteSteps(test, this.lightSpeedCababmenu, "click", "click on the Light Speed kabeb menu");
     }
     async ListOfPos() {
         const poss = this.NoOfPos;   // locator
@@ -70,48 +69,48 @@ export class DashboardPage {
             console.log(title);
         }
     }
-    async clickAddDeviceButton(){
-        await expect(this.btnAddDevice).toBeVisible(); 
-        await excuteSteps(test,this.btnAddDevice,"click","click on Add device button");
+    async clickAddDeviceButton() {
+        await expect(this.btnAddDevice).toBeVisible();
+        await excuteSteps(test, this.btnAddDevice, "click", "click on Add device button");
         // await this.btnAddDevice.click();
         await expect(this.addDeviceOptionsLayout).toBeVisible();
     }
-    async selectDeviceTypeInAddDevice(deviceType){
+    async selectDeviceTypeInAddDevice(deviceType) {
         await this.page.waitForTimeout(parseInt(process.env.SMALL_WAIT)); //need to remove hard wait
         await this.clickAddDeviceButton();
         await excuteSteps(test, this.addDevice(deviceType), "click", `click ${deviceType} in Add devices options`);
     }
 
-    async verifyRegisterExistInPosSytem(registerName){
+    async verifyRegisterExistInPosSytem(registerName) {
         const register = this.registerName(registerName)
         await expect(register).toBeVisible();
     }
-    async verifyRegisterShouldNotExistInPosSytem(registerName){
+    async verifyRegisterShouldNotExistInPosSytem(registerName) {
         const register = this.registerName(registerName)
         await expect(register).not.toBeVisible();
     }
     async deleteRegister(registerName) {
         await this.registerMenu(registerName).click();
         await this.deleteRegisterTxt.click();
-        expect(this.deleteRegisterDialogueBox).toContainText(`You are about to delete the register ${registerName}. It will be deleted from your dashboard`);
+        await expect(this.deleteRegisterDialogueBox).toContainText(`You are about to delete the register ${registerName}. It will be deleted from your dashboard`);
         await this.deleteRegisterBtnInDialogueBox.click();
         await expect(this.registerDeletedMessagebox).toBeVisible();
         await expect(this.registerDeletedMessagebox).toContainText(`The register ${registerName} was successfuly removed from Dashboard`);
     }
 
 
-    async expandSquaewPOSSystem(){
-        await excuteSteps(test,this.squarePOSExpandBtn,"click","Expand Square POS panel");
+    async expandSquaewPOSSystem() {
+        await excuteSteps(test, this.squarePOSExpandBtn, "click", "Expand Square POS panel");
     }
-    async expandLightSpeedPOSSystem(){
-        await excuteSteps(test,this.lightSpeedPOSExpandBtn,"click","Expand light speed POS panel");
+    async expandLightSpeedPOSSystem() {
+        await excuteSteps(test, this.lightSpeedPOSExpandBtn, "click", "Expand light speed POS panel");
     }
 
-    async deleteAllAddedRegisters(){
+    async deleteAllAddedRegisters() {
         const registers = this.availableRegistersThreeDotMenu;
         const expandBtn = this.lightSpeedPOSExpandBtn;
-        
-        if(expandBtn.count()>0){
+
+        if (await expandBtn.count() > 0) {
             this.expandLightSpeedPOSSystem();
             const count = await registers.count();
             for (let i = 0; i < count; i++) {
@@ -123,17 +122,13 @@ export class DashboardPage {
                 //await expect(this.registerDeletedMessagebox).toBeVisible();
                 //await expect(this.registerDeletedMessagebox).toContainText('was successfuly removed from Dashboard');
             }
-        }else{
+        } else {
             console.log('No registers present in Dashboard page for LIght speed POS');
         }
-    }      
+    }
     async addposbutton() {
-        
-        await excuteSteps(this.test, this.addPosButton, "click", "Clicking On pos Button");
-        // if (this.addPosButton.toBeVisible()) {
-        //     await excuteSteps(this.test, this.addPosButton, "click", "Clicking On pos Button");
-        // }
 
+        await excuteSteps(this.test, this.addPosButton, "click", "Clicking On pos Button");
 
     }
 
@@ -151,6 +146,16 @@ export class DashboardPage {
         await excuteSteps(this.test,this.deleteSystemBtn,"click","Click Delete System button in dialog box");
 
     }
+
+    // Add these to the DashboardPage class
+async navigateToPOSTransactions() {
+    const posTransactions = this.page.locator('//div[normalize-space()="POS-Transactions"]');
+    await excuteSteps(test, posTransactions, "click", "Navigating to POS-Transactions");
+}
+async navigateHistoryBrowser() {
+    const historyBrowser = this.page.locator('//div[normalize-space()="History browser"]');
+    await excuteSteps(test, historyBrowser, "click", "Navigating to history browser");
+}
 
 }
 
