@@ -59,7 +59,7 @@ test.describe('@smoke Login page test', async () => {
     })
 
     
-    test.only('EEPD-TC-34580,POS-Verify the mouse over text next to Oauth:Sign into Lightspeed(X-series) button',async()=>{
+    test('EEPD-TC-34580,POS-Verify the mouse over text next to Oauth:Sign into Lightspeed(X-series) button',async()=>{
         const loginPage = new sections.LoginPage(page, test);
         const LightSpeedSalePage = new sections.LightSpeedSalePage(page, test);
         const DashboardPage = new sections.DashboardPage(page, test);

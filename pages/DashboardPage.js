@@ -137,18 +137,18 @@ export class DashboardPage {
 
     }
 
-    async cababMenuOptions(){
+    async actionButtons(){
         await expect(this.editRegisters).toBeVisible();
         await expect(this.deleteSystem).toBeVisible();
         await expect(this.Settings).toBeVisible();
     }
 
     async deleteLightSpeedPOSSystem(){
-        await excuteSteps(test,this.deleteSystem,"click","Click Delete System");
+        await excuteSteps(this.test,this.deleteSystem,"click","Click Delete System");
         await expect(this.deleteSystemDialogBox).toBeVisible();
         await expect(this.deleteSystemDialogBox).toContainText('Delete system');
         await expect(this.deleteSystemDialogBox).toContainText('You are about to delete the integration Lightspeed POS (X-Series). It will be deleted from your dashboard');
-        await excuteSteps(test,this.deleteSystemBtn,"click","Click Delete System button in dialog box");
+        await excuteSteps(this.test,this.deleteSystemBtn,"click","Click Delete System button in dialog box");
 
     }
 

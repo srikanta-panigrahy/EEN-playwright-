@@ -39,8 +39,12 @@ export class PosSystemPage {
         this.lightSpeedPos = page.locator("//div[contains(@class,'title') and text()='Lightspeed POS (X-Series)']");
         this.signIntoLightSpeedPos = page.locator("//span[text()=' Sign into Lightspeed POS (X-Series) ']");
         
-        this.lightSpeedToolTip = page.locator('//span[text()=" Please sign into Lightspeed POS (X-Series) "] ');
-        this.icon=page.locator("//span[contains(@data-testid,'tooltip')]/following-sibling::span[1]");
+        // this.lightSpeedToolTip = page.locator('//span[text()=" Please sign into Lightspeed POS (X-Series) "] ');
+        this.selectPosSystem = page.locator('//input[@placeholder="Select POS system"]');
+        this.iconForSigninto = page.locator("//span[contains(@data-testid,'tooltip')]/following-sibling::span[1]");
+        this.tooltipForsSigninto = page.locator('//span[@data-testid="tooltip"]'); 
+        this.iconForConnect=page.locator("//span[contains(@data-testid,'tooltip')]/following-sibling::span[2]");
+        
         this.posIntegrationType = page.getByTestId('pos-integration-system-auth-type');
         this.connectButton = page.getByTestId('pos-integration-system-connect-button');
         
@@ -151,10 +155,10 @@ export class PosSystemPage {
         await expect(this.page).toHaveTitle('Sign in to Lightspeed Retail POS Software | Lightspeed Retail');
     }
 
-    async backToVMSPageAndVerify(){
-        await this.page.goBack();
-        await expect(this.page).toHaveTitle('Eagle Eye Networks');
-    }
+    // async backToVMSPageAndVerify(){
+    //     await this.page.goBack();
+    //     await expect(this.page).toHaveTitle('Eagle Eye Networks');
+    // }
 
     async authticationSuccessMessage(){
         await this.veifySuccessmessage();
@@ -171,7 +175,19 @@ export class PosSystemPage {
         await expect(this.snackbarMessageBody).toHaveText('Successfully connected');
 
     }
-    
-    
-   
+
+    async verifySigninIconToolTipBeforeloginTOLightSpeed(){
+        await this.iconForSigninto.hover();
+        await expect(this.tooltipForsSigninto).toBeVisible();
+        await expect(this.tooltipForsSigninto).toHaveText(" Please sign into Lightspeed POS (X-Series) ");
+    }
+    async addRegisterTabShouldBeDisabled(){
+        //await expect(this.posRegistersTab).toHaveClass(/v-tab--disabled/);
+        await expect(this.posRegistersTab).toContainClass('v-tab--disabled');
+    }
+    async verifySignInOptionNotDisplayed(){
+        await expect(this.selectPosSystem).toBeVisible();
+        await expect(this.signIntoLightSpeedPos).not.toBeVisible();
+
+    }
 }

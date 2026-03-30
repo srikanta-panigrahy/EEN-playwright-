@@ -19,6 +19,7 @@ export class LightSpeedSalePage{
         this.storeUrlinputBox = page.locator('//input[@placeholder="Enter your store URL"]');
         this.nextBtn = page.locator('//button[@type="submit"]');
         this.approveInstallationBtn = page.locator('//button[@data-track="connect-app"]');
+        this.errorBanner = page.getByTestId("modal-banner");
         
             
     }
@@ -82,7 +83,7 @@ export class LightSpeedSalePage{
         await this.storeUrlinputBox.fill('eagleeyenetworks')
         await this.nextBtn.click();
     }
-    async loginToLightSpeeed(){
+    async loginToLightSpeeedWithValidCredentials(){
         await this.enterStoreUrl();
         await this.enteruserName();
         await this.enterPassword();
@@ -95,6 +96,16 @@ export class LightSpeedSalePage{
         await this.approveInstallationBtn.click();
         await expect(this.approveInstallationBtn).not.toBeVisible();
         await this.page.waitForTimeout(parseInt(process.env. MEDIUM_WAIT));
+    }
+    async verifyInvalidLoginCredentialMessage(){
+        await expect(this.errorBanner).toBeVisible();
+        await expect(this.errorBanner).toHaveText('Incorrect username and/or password. Try again.');
+    }
+    async loginToLightSpeedWith(userName, password){
+        await this.enterStoreUrl();
+        await excuteSteps(this.test, this.userName, "fill", "Entering the username", [userName]);
+        await excuteSteps(this.test, this.password, "fill", "Entering the password", [password]);
+        await this.clickLogin();
     }
 }
 
