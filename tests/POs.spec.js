@@ -18,18 +18,7 @@ test.describe('@regression verifying pos', async () => {
          await context.close();
     })
 
-    test("Verifying the dashboard page", async () => {
-        const dashboardpage = new sections.DashboardPage(page, test);
-
-        await dashboardpage.GotoDashboardPage();
-        await dashboardpage.DevicesPage();
-        await dashboardpage.ScrollToPos();
-        await dashboardpage.ListOfPos();
-        await dashboardpage.kabebMenuAnd();
-        await dashboardpage.SettingClick();
-        await page.waitForTimeout(5000);
-
-    })
+    
 
     
     

@@ -22,7 +22,7 @@ test.describe('@regression Webhook connection duration check', async () => {
         await context.close();
     });
 
-    test.only('EEPD-TC-34673 POS-Check the duration for which the webhook connection remains active', async () => {
+    test('EEPD-TC-34673 POS-Check the duration for which the webhook connection remains active', async () => {
         const dashboardPage = new sections.DashboardPage(page, test);
         const posSystemPage = new sections.PosSystemPage(page, test);
         const lightSpeedPage = new sections.LightSpeedSalePage(page, test);

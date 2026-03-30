@@ -20,6 +20,7 @@ export class LightSpeedSalePage{
         this.nextBtn = page.locator('//button[@type="submit"]');
         this.approveInstallationBtn = page.locator('//button[@data-track="connect-app"]');
         
+        
             
     }
     async navigateaToLightSpeedSignInPage(){

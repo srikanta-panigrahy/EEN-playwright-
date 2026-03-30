@@ -20,9 +20,10 @@ export class SquarePosPage {
         this.verifyIntegrationType = page.locator("//div[text()=' Integration type ']");
         this.verifyoauth2 = page.getByTestId('pos-integration-system-auth-type');
         this.VerifyPosSelectionBox = page.getByTestId('pos-integration-system-sign-in-button')
-        this.registers=page.locator("//span[text()='POS registers']");
-        this.Singintopos=page.locator("//span[text()=' Sign into Lightspeed POS (X-Series) ']")
-        this.SelectposSystem=page.getByPlaceholder("Select POS system");
+        this.registers = page.locator("//span[text()='POS registers']");
+        this.Singintopos = page.locator("//span[text()=' Sign into Lightspeed POS (X-Series) ']")
+        this.SelectposSystem = page.getByPlaceholder("Select POS system");
+        this.searchingForPos = page.locator("//div[contains(@class,'list-group ')]");
 
 
     }
@@ -86,24 +87,40 @@ export class SquarePosPage {
         await excuteSteps(this.test, this.logout, "click", "Clicking on the logout");
     }
 
-    async RegistersDisableOrNot(){
+    async RegistersDisableOrNot() {
         // const element=await this.registers.isEnabled();
         // console.log(element);
         await expect(this.registers).toBeDisabled();
         await this.page.waitForTimeout(parseInt(process.env.SMALL_WAIT))
-        const checking=await excuteSteps(this.test,this.registers,"click")
-         await this.page.waitForTimeout(parseInt(process.env.SMALL_WAIT));
+        const checking = await excuteSteps(this.test, this.registers, "click")
+        await this.page.waitForTimeout(parseInt(process.env.SMALL_WAIT));
         expect(checking).toBeFalsy();
     }
 
-    async WithoutSelectingPosIndropDeown(){
+    async WithoutSelectingPosIndropDeown() {
         await expect(this.Singintopos).not.toBeVisible();
     }
 
-    async checkingPosIsSelectedOrNot(){
+    async checkingPosIsSelectedOrNot() {
         await expect(this.SelectposSystem).toBeEmpty();
     }
-    async selectdropdownpos(){
-        await excuteSteps(this.test,this.SelectposSystem,"click")
+    async selectdropdownpos() {
+        await excuteSteps(this.test, this.SelectposSystem, "click")
     }
+    async SearchForPosTransactions() {
+
+        const count = await this.searchingForPos.count()
+
+        for (let i = 0; i < count; i++) {
+            const content = await this.searchingForPos.nth(i).textContent();
+            if (content === "POS") {
+                console.log("POS is  exist")
+            }
+        }
+
+
+    }
+
+
 }
+

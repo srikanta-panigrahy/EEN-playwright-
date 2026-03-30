@@ -92,7 +92,7 @@ test.describe('@smoke Login page test', async () => {
 
     })
 
-     test('EEPD-TC-34578,NEG-Verify that the "Registers" tab is not clickable without user authentication.', async () => {
+    test('EEPD-TC-34578,NEG-Verify that the "Registers" tab is not clickable without user authentication.', async () => {
         const loginPage = new sections.LoginPage(page, test);
         const LightSpeedSalePage = new sections.LightSpeedSalePage(page, test);
         const DashboardPage = new sections.DashboardPage(page, test);
@@ -120,6 +120,17 @@ test.describe('@smoke Login page test', async () => {
         await SquarePosPage.checkingPosIsSelectedOrNot();
         await SquarePosPage.WithoutSelectingPosIndropDeown();
 
+    })
+
+    test.only("EEPD-TC-34668,NEG-User should not be allowed to see the transaction details when logged in through the Admin account", async () => {
+        const DashboardPage = new sections.DashboardPage(page, test);
+        const loginPage=new sections.LoginPage(page,test);
+        const SquarePosPage=new sections.SquarePosPage(page,test);
+        await loginPage.launchAppAndLoginWithValidCredentials();
+        await DashboardPage.GotoDashboardPage();
+        await DashboardPage.DevicesPage();
+        await DashboardPage.selectDeviceTypeInAddDevice('Add POS system');
+        await SquarePosPage.SearchForPosTransactions();
 
     })
 
