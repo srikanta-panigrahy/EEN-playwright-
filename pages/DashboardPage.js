@@ -35,7 +35,6 @@ export class DashboardPage {
 
     async GotoDashboardPage() {
         await this.page.waitForTimeout(parseInt(process.env.SMALL_WAIT));
-        await this.Dashboard.wait
         await excuteSteps(test, this.Dashboard, "click", "clicking on the dashboard")
 
 
@@ -111,7 +110,7 @@ export class DashboardPage {
         const registers = this.availableRegistersThreeDotMenu;
         const expandBtn = this.lightSpeedPOSExpandBtn;
 
-        if (expandBtn.count() > 0) {
+        if (await expandBtn.count() > 0) {
             this.expandLightSpeedPOSSystem();
             const count = await registers.count();
             for (let i = 0; i < count; i++) {
@@ -147,6 +146,16 @@ export class DashboardPage {
         await excuteSteps(test, this.deleteSystemBtn, "click", "Click Delete System button in dialog box");
 
     }
+
+    // Add these to the DashboardPage class
+async navigateToPOSTransactions() {
+    const posTransactions = this.page.locator('//div[normalize-space()="POS-Transactions"]');
+    await excuteSteps(test, posTransactions, "click", "Navigating to POS-Transactions");
+}
+async navigateHistoryBrowser() {
+    const historyBrowser = this.page.locator('//div[normalize-space()="History browser"]');
+    await excuteSteps(test, historyBrowser, "click", "Navigating to history browser");
+}
 
 }
 

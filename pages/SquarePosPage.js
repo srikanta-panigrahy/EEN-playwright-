@@ -103,4 +103,7 @@ export class SquarePosPage {
     async checkingPosIsSelectedOrNot(){
         await expect(this.SelectposSystem).toBeEmpty();
     }
+    async selectdropdownpos(){
+        await excuteSteps(this.test,this.SelectposSystem,"click")
+    }
 }

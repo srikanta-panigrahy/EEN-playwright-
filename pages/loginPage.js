@@ -1,4 +1,4 @@
-import { expect } from "allure-playwright";
+const { expect } = require('@playwright/test'); 
 
 const {excuteSteps}  =require("../utilities/actions.js");
 

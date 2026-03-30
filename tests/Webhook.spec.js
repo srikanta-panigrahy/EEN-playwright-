@@ -30,7 +30,7 @@ test.describe('@regression Webhook connection duration check', async () => {
         // 1. Navigate to Dashboard
         await dashboardPage.GotoDashboardPage();
 
-        // 2-3. Add POS system: Lightspeed (X-series)
+        // 2-3. Add POS system: Lightspeed (X-series)  
         await dashboardPage.DevicesPage();
         await dashboardPage.selectDeviceTypeInAddDevice(addPosSystem);
         await posSystemPage.verifyPosSystemPageAppeard();
@@ -72,17 +72,20 @@ test.describe('@regression Webhook connection duration check', async () => {
         await lightSpeedPage.selectItems(itemsToSelect);
         await lightSpeedPage.clickPay();
         await lightSpeedPage.CashButton();
-        // 12. Verify POS-Transactions and History Browser in VMS
+       // 12. Verify POS-Transactions and History Browser in VMS
         await dashboardPage.GotoDashboardPage();
         await dashboardPage.navigateToPOSTransactions();
         await dashboardPage.navigateHistoryBrowser();
 
         // 13. Verify duration (UI Connection remains active until disconnect)
-        // Check the Webhook indicator status again in the VMS settings
         await dashboardPage.GotoDashboardPage();
         await dashboardPage.ScrollToPos();
         await dashboardPage.expandLightSpeedPOSSystem();
+        
+        // FIX: You must click the Kebab Menu before Clicking Settings
+        await dashboardPage.kabebMenuAnd(); 
         await dashboardPage.SettingClick();
+        
         await posSystemPage.verifyWebhookStatusIndicator();
 
         console.log("EEPD-TC-34673: Webhook connection verified successfully active.");
