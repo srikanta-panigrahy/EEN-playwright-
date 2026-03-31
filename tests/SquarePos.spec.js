@@ -57,7 +57,7 @@ test.describe('@smoke Login page test', async () => {
 
     })
 
-    test('EEPD-TC-34580,POS-Verify the mouse over text next to Oauth:Sign into Lightspeed(X-series) button', async () => {
+    test.only('EEPD-TC-34580,POS-Verify the mouse over text next to Oauth:Sign into Lightspeed(X-series) button', async () => {
         const loginPage = new sections.LoginPage(page, test);
         const LightSpeedSalePage = new sections.LightSpeedSalePage(page, test);
         const DashboardPage = new sections.DashboardPage(page, test);
@@ -84,9 +84,10 @@ test.describe('@smoke Login page test', async () => {
         await DashboardPage.GotoDashboardPage();
         await DashboardPage.DevicesPage();
         await DashboardPage.selectDeviceTypeInAddDevice('Add POS system');
-        await SquarePosPage.PosSystemOptions();
         await posSystemPage.PosDrpDwn();
-        await SquarePosPage.Logoutfromcurrentpage();
+        await posSystemPage.clickOnPos()
+        await SquarePosPage.PosSystemOptions();
+        // await SquarePosPage.Logoutfromcurrentpage();
 
 
     })
@@ -134,7 +135,7 @@ test.describe('@smoke Login page test', async () => {
     })
 
 
-    test.only("EEPD-TC-34667,NEG-User should not be allowed to see the transaction details when logged in through the Non-Admin account", async () => {
+    test("EEPD-TC-34667,NEG-User should not be allowed to see the transaction details when logged in through the Non-Admin account", async () => {
         const DashboardPage = new sections.DashboardPage(page, test);
         const loginPage = new sections.LoginPage(page, test);
         const SquarePosPage = new sections.SquarePosPage(page, test);
@@ -142,7 +143,7 @@ test.describe('@smoke Login page test', async () => {
         await DashboardPage.GotoDashboardPage();
         await DashboardPage.DevicesPage();
         await DashboardPage.NottohaveAddposDevice('Add POS system');
-        await SquarePosPage.Logoutfromcurrentpage();
+        // await SquarePosPage.Logoutfromcurrentpage();
 
     })
 

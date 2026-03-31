@@ -30,7 +30,6 @@ test.describe('@regression Add register and delete register', async () => {
         await posSystemPage.clickPlusIcon();
         await posSystemPage.SelectRegister(devices.SquareRegisterOptions[0]);
         await posSystemPage.clickAddRegister();
-    
         await posSystemPage.SelectSite();
         await posSystemPage.SelectCamera();
         await posSystemPage.clickSaveChangesBtn();
@@ -46,7 +45,6 @@ test.describe('@regression Add register and delete register', async () => {
     test('EEPD-TC-34628 Invlid register name',async()=>{
         const dashboardpage = new sections.DashboardPage(page, test);
         const posSystemPage = new sections.PosSystemPage(page, test);
-
         await dashboardpage.selectDeviceTypeInAddDevice(devices.invlidRegisterName);
         await posSystemPage.verifyPosSystemPageAppeard();
         await posSystemPage.clickPOSRegisterTab();

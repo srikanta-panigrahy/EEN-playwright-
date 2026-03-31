@@ -21,11 +21,24 @@ export class LoginPage {
     }
 
     async enterUserName(user) {
-        await excuteSteps(this.test, this.username, "fill", " launches the browser and enter the username", user);
+        // 1. Wait for the element to be visible
+        await this.username.waitFor({ state: 'visible', timeout: 5000 });
+        
+        // 2. Click it to ensure focus (Solves the "skipped input" issue)
+        await this.username.click();
+        
+        // 3. Clear existing text just in case
+        await this.username.clear();
+
+        // 4. Input the text (Use "fill" or "type" via your utility)
+        await excuteSteps(this.test, this.username, "fill", "User enters username", user);
     }
 
     async enterPassword(pass) {
-        await excuteSteps(this.test, this.password, "fill", "User enter the password", pass);
+       // Ensure password field is actually ready before typing
+        await this.password.waitFor({ state: 'visible' });
+        await this.password.click();
+        await excuteSteps(this.test, this.password, "fill", "User enters password", pass);
     }
 
     async clickNext() {
